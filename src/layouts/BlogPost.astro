@@ -1,0 +1,165 @@
+---
+import Base from './Base.astro';
+
+interface Props {
+  title: string;
+  lang: 'ru' | 'en';
+  description: string;
+  date: string;       // human: "16 марта 2026"
+  dateISO: string;    // machine: "2026-03-16"
+  slug: string;       // "chto-takoe-ekonomika"
+}
+
+const { title, lang, description, date, dateISO, slug } = Astro.props;
+const canonical = `https://bossto.blog/${lang}/blog/${slug}/`;
+const jsonld = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": title,
+  "description": description,
+  "datePublished": dateISO,
+  "inLanguage": lang,
+  "url": canonical,
+  "author": { "@type": "Person", "name": "Bossto" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Bossto",
+    "url": "https://bossto.blog"
+  }
+});
+---
+<Base title={title} lang={lang}>
+  <Fragment slot="head">
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <script type="application/ld+json" set:html={jsonld} />
+  </Fragment>
+
+  <style>
+    .post-header {
+      padding: 3rem 0 2.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.6s 0.05s ease both;
+    }
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #e63030;
+    }
+    .post-meta span { color: #2a2a2a; }
+    .post-header h1 {
+      font-size: clamp(1.8rem, 4.5vw, 3rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      background: linear-gradient(160deg, #ffffff 40%, #555 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* TL;DR box */
+    .tldr {
+      border: 1px solid rgba(230,48,48,0.25);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 3rem;
+      background: rgba(230,48,48,0.04);
+      animation: fadeUp 0.6s 0.15s ease both;
+    }
+    .tldr-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #e63030;
+      margin-bottom: 0.6rem;
+    }
+    .tldr p {
+      font-size: 0.9rem;
+      color: #666;
+      line-height: 1.7;
+    }
+
+    /* Article body */
+    .post-body {
+      animation: fadeUp 0.6s 0.25s ease both;
+    }
+    .post-body h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #e8e8e8;
+      margin: 3rem 0 1rem;
+    }
+    .post-body h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #bbb;
+      margin: 2rem 0 0.75rem;
+    }
+    .post-body p {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: #888;
+      margin-bottom: 1.25rem;
+    }
+    .post-body strong { color: #d0d0d0; font-weight: 600; }
+    .post-body em { color: #aaa; font-style: italic; }
+    .post-body ul, .post-body ol {
+      padding-left: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .post-body li {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: #888;
+      margin-bottom: 0.3rem;
+    }
+    .post-body blockquote {
+      border-left: 2px solid #e63030;
+      padding-left: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    .post-body blockquote p { color: #555; font-style: italic; }
+
+    .post-footer {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      animation: fadeUp 0.6s 0.35s ease both;
+    }
+  </style>
+
+  <article>
+    <header class="post-header">
+      <div class="post-meta">
+        <span>{lang === 'ru' ? 'Блог' : 'Blog'}</span>·{date}
+      </div>
+      <h1>{title}</h1>
+    </header>
+
+    <slot name="tldr" />
+
+    <div class="post-body">
+      <slot />
+    </div>
+
+    <footer class="post-footer">
+      <slot name="footer" />
+    </article>
+</Base>

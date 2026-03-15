@@ -43,9 +43,51 @@ import Support from '../../../components/Support.astro';
     <h1>Блог</h1>
     <p>Анимированные объяснения сложных идей.</p>
   </div>
-  <div class="empty-state">
-    <p>Первые видео и посты уже в работе. Подпишись, чтобы не пропустить.</p>
-  </div>
+
+  <style>
+    .post-list { list-style: none; padding: 0; }
+    .post-item {
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding: 1.75rem 0;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+    .post-item a {
+      text-decoration: none;
+      display: block;
+    }
+    .post-date {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #e63030;
+      margin-bottom: 0.5rem;
+    }
+    .post-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #d0d0d0;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+      transition: color 0.2s;
+    }
+    .post-item a:hover .post-title { color: #fff; }
+    .post-desc {
+      font-size: 0.875rem;
+      color: #3a3a3a;
+      line-height: 1.6;
+    }
+  </style>
+
+  <ul class="post-list">
+    <li class="post-item">
+      <a href="/ru/blog/chto-takoe-ekonomika/">
+        <div class="post-date">16 марта 2026</div>
+        <div class="post-title">Что такое экономика</div>
+        <div class="post-desc">Спрос, предложение, стимулы и зачем это знать — объясняем с нуля.</div>
+      </a>
+    </li>
+  </ul>
   <div class="support-wrap">
     <Support lang="ru" />
   </div>
