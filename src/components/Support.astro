@@ -1,0 +1,70 @@
+---
+import { config } from '../config/socials';
+
+interface Props {
+  lang: string;
+}
+const { lang } = Astro.props;
+const support = config[lang]?.support ?? config['en'].support;
+const heading: Record<string, string> = {
+  ru: 'Поддержать',
+  en: 'Support',
+  es: 'Apoyar',
+};
+---
+
+<div class="support">
+  <h3>{heading[lang] ?? heading['en']}</h3>
+  <div class="support-links">
+    {support.map(s => (
+      <a href={s.url} target="_blank" rel="noopener noreferrer">
+        <span class="support-label">{s.label}</span>
+        <span class="support-desc">{s.description}</span>
+      </a>
+    ))}
+  </div>
+</div>
+
+<style>
+  .support {
+    margin-top: 4rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid #1a1a1a;
+  }
+  .support h3 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #444;
+    margin-bottom: 1rem;
+  }
+  .support-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .support-links a {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid #1a1a1a;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .support-links a:hover {
+    border-color: #333;
+    background: #111;
+  }
+  .support-label {
+    color: #f0f0f0;
+    font-weight: 500;
+    font-size: 0.95rem;
+    white-space: nowrap;
+  }
+  .support-desc {
+    color: #555;
+    font-size: 0.85rem;
+  }
+</style>

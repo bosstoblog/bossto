@@ -1,5 +1,6 @@
 ---
 import Base from '../../../layouts/Base.astro';
+import Support from '../../../components/Support.astro';
 ---
 <Base title="Blog" lang="en">
   <style>
@@ -9,12 +10,9 @@ import Base from '../../../layouts/Base.astro';
       letter-spacing: -0.03em;
       margin-bottom: 3rem;
     }
-    .empty {
-      color: #555;
-      font-size: 1rem;
-      line-height: 1.7;
-    }
+    .empty { color: #555; font-size: 1rem; line-height: 1.7; }
   </style>
   <h1>Blog</h1>
   <p class="empty">Articles coming soon.</p>
+  <Support lang="en" />
 </Base>
