@@ -45,7 +45,7 @@ const jsonld = JSON.stringify({
   <style>
     .post-header {
       padding: 3rem 0 2.5rem;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid var(--border-subtle);
       margin-bottom: 2.5rem;
       animation: fadeUp 0.6s 0.05s ease both;
     }
@@ -58,15 +58,15 @@ const jsonld = JSON.stringify({
       font-weight: 600;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: #e63030;
+      color: var(--red);
     }
-    .post-meta span { color: #2a2a2a; }
+    .post-meta span { color: var(--muted); }
     .post-header h1 {
       font-size: clamp(1.8rem, 4.5vw, 3rem);
       font-weight: 900;
       letter-spacing: -0.04em;
       line-height: 1.1;
-      background: linear-gradient(160deg, #ffffff 40%, #555 100%);
+      background: linear-gradient(160deg, var(--fg) 40%, var(--gradient-end) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -86,12 +86,12 @@ const jsonld = JSON.stringify({
       font-weight: 700;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: #e63030;
+      color: var(--red);
       margin-bottom: 0.6rem;
     }
     .tldr p {
       font-size: 0.9rem;
-      color: #666;
+      color: var(--text);
       line-height: 1.7;
     }
 
@@ -103,23 +103,23 @@ const jsonld = JSON.stringify({
       font-size: 1.35rem;
       font-weight: 800;
       letter-spacing: -0.03em;
-      color: #e8e8e8;
+      color: var(--heading);
       margin: 3rem 0 1rem;
     }
     .post-body h3 {
       font-size: 1.05rem;
       font-weight: 700;
-      color: #bbb;
+      color: var(--text);
       margin: 2rem 0 0.75rem;
     }
     .post-body p {
       font-size: 1rem;
       line-height: 1.85;
-      color: #888;
+      color: var(--text);
       margin-bottom: 1.25rem;
     }
-    .post-body strong { color: #d0d0d0; font-weight: 600; }
-    .post-body em { color: #aaa; font-style: italic; }
+    .post-body strong { color: var(--heading); font-weight: 600; }
+    .post-body em { color: var(--muted); font-style: italic; }
     .post-body ul, .post-body ol {
       padding-left: 1.5rem;
       margin-bottom: 1.25rem;
@@ -127,20 +127,20 @@ const jsonld = JSON.stringify({
     .post-body li {
       font-size: 1rem;
       line-height: 1.8;
-      color: #888;
+      color: var(--text);
       margin-bottom: 0.3rem;
     }
     .post-body blockquote {
-      border-left: 2px solid #e63030;
+      border-left: 2px solid var(--red);
       padding-left: 1.25rem;
       margin: 1.5rem 0;
     }
-    .post-body blockquote p { color: #555; font-style: italic; }
+    .post-body blockquote p { color: var(--muted); font-style: italic; }
 
     .post-footer {
       margin-top: 4rem;
       padding-top: 2rem;
-      border-top: 1px solid rgba(255,255,255,0.05);
+      border-top: 1px solid var(--border-subtle);
       animation: fadeUp 0.6s 0.35s ease both;
     }
   </style>

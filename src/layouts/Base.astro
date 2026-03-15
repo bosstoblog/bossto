@@ -6,7 +6,6 @@ interface Props {
 const { title, lang } = Astro.props;
 const other = lang === 'ru' ? 'en' : 'ru';
 const otherLabel = lang === 'ru' ? 'EN' : 'RU';
-// Smart lang switch: preserves current page (blog → blog, etc.)
 const currentPath = Astro.url.pathname;
 const otherPath = currentPath.replace(new RegExp(`^/${lang}`), `/${other}`);
 ---
@@ -25,16 +24,51 @@ const otherPath = currentPath.replace(new RegExp(`^/${lang}`), `/${other}`);
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900&display=swap" rel="stylesheet" />
     <title>{title} — Bossto</title>
+
+    <!-- Prevent flash: set theme before render -->
+    <script is:inline>
+      (function () {
+        var saved = localStorage.getItem('bossto-theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.setAttribute('data-theme', saved || (prefersDark ? 'dark' : 'light'));
+      })();
+    </script>
+
     <style>
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-      :root {
+
+      /* ─── Dark theme (default) ─── */
+      :root, [data-theme="dark"] {
         --bg: #080808;
         --fg: #f0f0f0;
-        --muted: #555;
+        --muted: #505050;
+        --text: #888;
+        --heading: #e0e0e0;
         --red: #e63030;
-        --red-dim: rgba(230, 48, 48, 0.18);
-        font-family: 'Inter', system-ui, sans-serif;
-        scroll-behavior: smooth;
+        --border: rgba(255,255,255,0.055);
+        --border-subtle: rgba(255,255,255,0.04);
+        --nav-bg: rgba(8,8,8,0.75);
+        --lang-border: rgba(255,255,255,0.1);
+        --glow: rgba(230,48,48,0.055);
+        --footer-color: #252525;
+        --gradient-end: #3a3a3a;
+      }
+
+      /* ─── Light theme ─── */
+      [data-theme="light"] {
+        --bg: #f7f7f5;
+        --fg: #111111;
+        --muted: #999;
+        --text: #555;
+        --heading: #111;
+        --red: #d42828;
+        --border: rgba(0,0,0,0.07);
+        --border-subtle: rgba(0,0,0,0.05);
+        --nav-bg: rgba(247,247,245,0.85);
+        --lang-border: rgba(0,0,0,0.14);
+        --glow: rgba(212,40,40,0.035);
+        --footer-color: #bbb;
+        --gradient-end: #888;
       }
 
       @keyframes fadeUp {
@@ -46,23 +80,23 @@ const otherPath = currentPath.replace(new RegExp(`^/${lang}`), `/${other}`);
         to   { opacity: 1; }
       }
 
+      html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+
       body {
         background: var(--bg);
         color: var(--fg);
         min-height: 100vh;
         overflow-x: hidden;
         animation: fadeIn 0.35s ease both;
+        transition: background 0.25s ease, color 0.25s ease;
       }
 
-      /* Ambient red glow top-right */
       body::before {
         content: '';
         position: fixed;
-        top: -15%;
-        right: -15%;
-        width: 700px;
-        height: 700px;
-        background: radial-gradient(circle, rgba(230,48,48,0.055) 0%, transparent 65%);
+        top: -15%; right: -15%;
+        width: 700px; height: 700px;
+        background: radial-gradient(circle, var(--glow) 0%, transparent 65%);
         pointer-events: none;
         z-index: 0;
       }
@@ -75,11 +109,12 @@ const otherPath = currentPath.replace(new RegExp(`^/${lang}`), `/${other}`);
         justify-content: space-between;
         align-items: center;
         padding: 1.2rem 2rem;
-        border-bottom: 1px solid rgba(255,255,255,0.055);
+        border-bottom: 1px solid var(--border);
         backdrop-filter: blur(18px);
         -webkit-backdrop-filter: blur(18px);
-        background: rgba(8,8,8,0.72);
+        background: var(--nav-bg);
         animation: fadeIn 0.5s ease both;
+        transition: background 0.25s ease, border-color 0.25s ease;
       }
       nav a { text-decoration: none; }
       .logo {
@@ -90,7 +125,8 @@ const otherPath = currentPath.replace(new RegExp(`^/${lang}`), `/${other}`);
         transition: opacity 0.2s;
       }
       .logo:hover { opacity: 0.75; }
-      .nav-right { display: flex; gap: 1.5rem; align-items: center; }
+
+      .nav-right { display: flex; gap: 1.25rem; align-items: center; }
       .nav-right a {
         color: var(--muted);
         font-size: 0.875rem;
@@ -98,11 +134,12 @@ const otherPath = currentPath.replace(new RegExp(`^/${lang}`), `/${other}`);
         transition: color 0.2s;
       }
       .nav-right a:hover { color: var(--fg); }
+
       .lang-switch {
         font-size: 0.72rem;
         font-weight: 700;
         letter-spacing: 0.08em;
-        border: 1px solid rgba(255,255,255,0.1);
+        border: 1px solid var(--lang-border);
         padding: 0.28rem 0.6rem;
         border-radius: 5px;
         color: var(--muted) !important;
@@ -113,6 +150,28 @@ const otherPath = currentPath.replace(new RegExp(`^/${lang}`), `/${other}`);
         border-color: var(--red);
         color: var(--red) !important;
       }
+
+      /* Theme toggle button */
+      .theme-btn {
+        background: none;
+        border: 1px solid var(--lang-border);
+        border-radius: 5px;
+        padding: 0.28rem 0.45rem;
+        cursor: pointer;
+        color: var(--muted);
+        line-height: 1;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+      }
+      .theme-btn:hover { border-color: var(--red); color: var(--red); }
+      .theme-btn svg { display: block; width: 13px; height: 13px; }
+
+      /* Show sun in dark mode (click = go light), moon in light mode (click = go dark) */
+      [data-theme="dark"]  .icon-moon { display: none; }
+      [data-theme="dark"]  .icon-sun  { display: block; }
+      [data-theme="light"] .icon-sun  { display: none; }
+      [data-theme="light"] .icon-moon { display: block; }
 
       main {
         position: relative;
@@ -127,9 +186,10 @@ const otherPath = currentPath.replace(new RegExp(`^/${lang}`), `/${other}`);
         z-index: 1;
         text-align: center;
         padding: 2rem;
-        color: #2a2a2a;
+        color: var(--footer-color);
         font-size: 0.8rem;
-        border-top: 1px solid rgba(255,255,255,0.04);
+        border-top: 1px solid var(--border-subtle);
+        transition: color 0.25s ease;
       }
     </style>
   </head>
@@ -143,11 +203,41 @@ const otherPath = currentPath.replace(new RegExp(`^/${lang}`), `/${other}`);
           class="lang-switch"
           onclick={`localStorage.setItem('bossto-lang','${other}')`}
         >{otherLabel}</a>
+
+        <button class="theme-btn" id="theme-btn" aria-label="Toggle theme">
+          <!-- Sun icon (shown in dark mode) -->
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <!-- Moon icon (shown in light mode) -->
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
       </div>
     </nav>
+
     <main>
       <slot />
     </main>
+
     <footer>© 2026 Bossto</footer>
+
+    <script is:inline>
+      document.getElementById('theme-btn').addEventListener('click', function () {
+        var current = document.documentElement.getAttribute('data-theme');
+        var next = current === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('bossto-theme', next);
+      });
+    </script>
   </body>
 </html>
