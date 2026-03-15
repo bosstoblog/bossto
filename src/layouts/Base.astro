@@ -6,13 +6,19 @@ interface Props {
 const { title, lang } = Astro.props;
 const other = lang === 'ru' ? 'en' : 'ru';
 const otherLabel = lang === 'ru' ? 'EN' : 'RU';
+const siteName = lang === 'ru' ? 'Ru · Bossto Blog' : 'Bossto Blog';
 ---
 <html lang={lang}>
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title} — bossto</title>
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Bossto" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <title>{title} — {siteName}</title>
     <style>
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
       :root {
@@ -70,6 +76,6 @@ const otherLabel = lang === 'ru' ? 'EN' : 'RU';
     <main>
       <slot />
     </main>
-    <footer>© 2026 bossto</footer>
+    <footer>© 2026 {siteName}</footer>
   </body>
 </html>
