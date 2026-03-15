@@ -1,0 +1,38 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base title="Home" lang="en">
+  <style>
+    .hero { padding: 6rem 0 4rem; }
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+    .hero p {
+      font-size: 1.15rem;
+      color: #888;
+      max-width: 480px;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+    .cta {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background: #f0f0f0;
+      color: #0a0a0a;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+    .cta:hover { opacity: 0.85; }
+  </style>
+  <section class="hero">
+    <h1>bossto</h1>
+    <p>Thoughts, experience and tools for those who build their own thing.</p>
+    <a href="/en/blog/" class="cta">Read blog</a>
+  </section>
+</Base>

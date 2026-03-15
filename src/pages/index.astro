@@ -1,17 +1,19 @@
 ---
-
+// Auto-detect language and redirect
 ---
-
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <title>bossto</title>
+    <script>
+      const saved = localStorage.getItem('bossto-lang');
+      const browser = navigator.language || '';
+      const lang = saved || (browser.toLowerCase().startsWith('ru') ? 'ru' : 'en');
+      localStorage.setItem('bossto-lang', lang);
+      window.location.replace('/' + lang + '/');
+    </script>
+  </head>
+  <body></body>
 </html>

@@ -1,0 +1,75 @@
+---
+interface Props {
+  title: string;
+  lang: 'ru' | 'en';
+}
+const { title, lang } = Astro.props;
+const other = lang === 'ru' ? 'en' : 'ru';
+const otherLabel = lang === 'ru' ? 'EN' : 'RU';
+---
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} — bossto</title>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      :root {
+        --bg: #0a0a0a;
+        --fg: #f0f0f0;
+        --muted: #666;
+        --accent: #e8e8e8;
+        font-family: 'Inter', system-ui, sans-serif;
+      }
+      body { background: var(--bg); color: var(--fg); min-height: 100vh; }
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 2rem;
+        border-bottom: 1px solid #1a1a1a;
+      }
+      nav a { color: var(--fg); text-decoration: none; }
+      .logo { font-weight: 600; letter-spacing: -0.02em; }
+      .nav-right { display: flex; gap: 2rem; align-items: center; }
+      .nav-right a { color: var(--muted); font-size: 0.9rem; transition: color 0.2s; }
+      .nav-right a:hover { color: var(--fg); }
+      .lang-switch {
+        font-size: 0.8rem;
+        border: 1px solid #333;
+        padding: 0.25rem 0.6rem;
+        border-radius: 4px;
+        color: var(--muted) !important;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .lang-switch:hover { border-color: var(--fg); color: var(--fg) !important; }
+      main { max-width: 800px; margin: 0 auto; padding: 4rem 2rem; }
+      footer {
+        text-align: center;
+        padding: 2rem;
+        color: var(--muted);
+        font-size: 0.8rem;
+        border-top: 1px solid #1a1a1a;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href={`/${lang}/`} class="logo">bossto</a>
+      <div class="nav-right">
+        <a href={`/${lang}/blog/`}>{lang === 'ru' ? 'Блог' : 'Blog'}</a>
+        <a
+          href={`/${other}/`}
+          class="lang-switch"
+          onclick={`localStorage.setItem('bossto-lang','${other}')`}
+        >{otherLabel}</a>
+      </div>
+    </nav>
+    <main>
+      <slot />
+    </main>
+    <footer>© 2026 bossto</footer>
+  </body>
+</html>
