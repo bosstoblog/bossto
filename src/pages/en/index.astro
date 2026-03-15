@@ -4,37 +4,104 @@ import Socials from '../../components/Socials.astro';
 ---
 <Base title="Home" lang="en">
   <style>
-    .hero { padding: 6rem 0 4rem; }
-    .hero h1 {
-      font-size: clamp(2.5rem, 6vw, 5rem);
+    .hero { padding: 7rem 0 5rem; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.7rem;
       font-weight: 700;
-      letter-spacing: -0.04em;
-      line-height: 1.1;
-      margin-bottom: 1.5rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #e63030;
+      margin-bottom: 1.75rem;
+      animation: fadeUp 0.6s 0.05s ease both;
     }
+    .eyebrow::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1px;
+      background: #e63030;
+    }
+
+    .hero h1 {
+      font-size: clamp(3.5rem, 9vw, 7rem);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      line-height: 0.95;
+      margin-bottom: 1.75rem;
+      background: linear-gradient(160deg, #ffffff 30%, #3a3a3a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeUp 0.7s 0.15s ease both;
+    }
+
     .hero p {
-      font-size: 1.15rem;
-      color: #888;
-      max-width: 480px;
-      line-height: 1.7;
-      margin-bottom: 2.5rem;
+      font-size: 1.05rem;
+      color: #4a4a4a;
+      max-width: 400px;
+      line-height: 1.8;
+      margin-bottom: 2.75rem;
+      font-weight: 400;
+      animation: fadeUp 0.7s 0.28s ease both;
     }
+
+    .cta-row {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 4.5rem;
+      animation: fadeUp 0.7s 0.4s ease both;
+    }
+
     .cta {
-      display: inline-block;
-      padding: 0.75rem 1.5rem;
-      background: #f0f0f0;
-      color: #0a0a0a;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.8rem 1.6rem;
+      background: #e63030;
+      color: #fff;
       text-decoration: none;
-      border-radius: 6px;
-      font-weight: 500;
-      transition: opacity 0.2s;
+      border-radius: 7px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: -0.01em;
+      box-shadow: 0 0 28px rgba(230,48,48,0.28), 0 2px 12px rgba(0,0,0,0.4);
+      transition: all 0.25s ease;
     }
-    .cta:hover { opacity: 0.85; }
+    .cta:hover {
+      background: #f03535;
+      box-shadow: 0 0 52px rgba(230,48,48,0.52), 0 4px 20px rgba(0,0,0,0.4);
+      transform: translateY(-2px);
+    }
+
+    .cta-link {
+      font-size: 0.875rem;
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .cta-link:hover { color: #666; }
+
+    .socials-wrap {
+      animation: fadeUp 0.7s 0.52s ease both;
+    }
   </style>
+
   <section class="hero">
+    <p class="eyebrow">Independent media</p>
     <h1>bossto</h1>
     <p>Thoughts, experience and tools for those who build their own thing.</p>
-    <a href="/en/blog/" class="cta">Read blog</a>
-    <Socials lang="en" />
+    <div class="cta-row">
+      <a href="/en/blog/" class="cta">Read blog →</a>
+      <a href="/en/blog/" class="cta-link">What is this?</a>
+    </div>
+    <div class="socials-wrap">
+      <Socials lang="en" />
+    </div>
   </section>
 </Base>

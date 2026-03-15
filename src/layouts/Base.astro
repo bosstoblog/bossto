@@ -6,7 +6,9 @@ interface Props {
 const { title, lang } = Astro.props;
 const other = lang === 'ru' ? 'en' : 'ru';
 const otherLabel = lang === 'ru' ? 'EN' : 'RU';
-const siteName = lang === 'ru' ? 'Ru · Bossto Blog' : 'Bossto Blog';
+// Smart lang switch: preserves current page (blog → blog, etc.)
+const currentPath = Astro.url.pathname;
+const otherPath = currentPath.replace(new RegExp(`^/${lang}`), `/${other}`);
 ---
 <html lang={lang}>
   <head>
@@ -18,46 +20,115 @@ const siteName = lang === 'ru' ? 'Ru · Bossto Blog' : 'Bossto Blog';
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Bossto" />
     <link rel="manifest" href="/site.webmanifest" />
-    <title>{title} — {siteName}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900&display=swap" rel="stylesheet" />
+    <title>{title} — Bossto</title>
     <style>
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
       :root {
-        --bg: #0a0a0a;
+        --bg: #080808;
         --fg: #f0f0f0;
-        --muted: #666;
-        --accent: #e8e8e8;
+        --muted: #555;
+        --red: #e63030;
+        --red-dim: rgba(230, 48, 48, 0.18);
         font-family: 'Inter', system-ui, sans-serif;
+        scroll-behavior: smooth;
       }
-      body { background: var(--bg); color: var(--fg); min-height: 100vh; }
+
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(22px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--fg);
+        min-height: 100vh;
+        overflow-x: hidden;
+        animation: fadeIn 0.35s ease both;
+      }
+
+      /* Ambient red glow top-right */
+      body::before {
+        content: '';
+        position: fixed;
+        top: -15%;
+        right: -15%;
+        width: 700px;
+        height: 700px;
+        background: radial-gradient(circle, rgba(230,48,48,0.055) 0%, transparent 65%);
+        pointer-events: none;
+        z-index: 0;
+      }
+
       nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 1.5rem 2rem;
-        border-bottom: 1px solid #1a1a1a;
+        padding: 1.2rem 2rem;
+        border-bottom: 1px solid rgba(255,255,255,0.055);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        background: rgba(8,8,8,0.72);
+        animation: fadeIn 0.5s ease both;
       }
-      nav a { color: var(--fg); text-decoration: none; }
-      .logo { font-weight: 600; letter-spacing: -0.02em; }
-      .nav-right { display: flex; gap: 2rem; align-items: center; }
-      .nav-right a { color: var(--muted); font-size: 0.9rem; transition: color 0.2s; }
+      nav a { text-decoration: none; }
+      .logo {
+        font-size: 1.05rem;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        color: var(--red);
+        transition: opacity 0.2s;
+      }
+      .logo:hover { opacity: 0.75; }
+      .nav-right { display: flex; gap: 1.5rem; align-items: center; }
+      .nav-right a {
+        color: var(--muted);
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
       .nav-right a:hover { color: var(--fg); }
       .lang-switch {
-        font-size: 0.8rem;
-        border: 1px solid #333;
-        padding: 0.25rem 0.6rem;
-        border-radius: 4px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 0.28rem 0.6rem;
+        border-radius: 5px;
         color: var(--muted) !important;
         cursor: pointer;
         transition: all 0.2s;
       }
-      .lang-switch:hover { border-color: var(--fg); color: var(--fg) !important; }
-      main { max-width: 800px; margin: 0 auto; padding: 4rem 2rem; }
+      .lang-switch:hover {
+        border-color: var(--red);
+        color: var(--red) !important;
+      }
+
+      main {
+        position: relative;
+        z-index: 1;
+        max-width: 820px;
+        margin: 0 auto;
+        padding: 4rem 2rem;
+      }
+
       footer {
+        position: relative;
+        z-index: 1;
         text-align: center;
         padding: 2rem;
-        color: var(--muted);
+        color: #2a2a2a;
         font-size: 0.8rem;
-        border-top: 1px solid #1a1a1a;
+        border-top: 1px solid rgba(255,255,255,0.04);
       }
     </style>
   </head>
@@ -67,7 +138,7 @@ const siteName = lang === 'ru' ? 'Ru · Bossto Blog' : 'Bossto Blog';
       <div class="nav-right">
         <a href={`/${lang}/blog/`}>{lang === 'ru' ? 'Блог' : 'Blog'}</a>
         <a
-          href={`/${other}/`}
+          href={otherPath}
           class="lang-switch"
           onclick={`localStorage.setItem('bossto-lang','${other}')`}
         >{otherLabel}</a>
@@ -76,6 +147,6 @@ const siteName = lang === 'ru' ? 'Ru · Bossto Blog' : 'Bossto Blog';
     <main>
       <slot />
     </main>
-    <footer>© 2026 {siteName}</footer>
+    <footer>© 2026 Bossto</footer>
   </body>
 </html>

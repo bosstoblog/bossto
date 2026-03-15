@@ -4,15 +4,49 @@ import Support from '../../../components/Support.astro';
 ---
 <Base title="Блог" lang="ru">
   <style>
-    h1 {
-      font-size: 2rem;
-      font-weight: 700;
-      letter-spacing: -0.03em;
+    .blog-header {
+      padding: 4rem 0 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
       margin-bottom: 3rem;
+      animation: fadeUp 0.6s 0.1s ease both;
     }
-    .empty { color: #555; font-size: 1rem; line-height: 1.7; }
+    .blog-header h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      background: linear-gradient(160deg, #ffffff 40%, #444 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.75rem;
+    }
+    .blog-header p {
+      font-size: 0.9rem;
+      color: #333;
+      font-weight: 500;
+    }
+    .empty-state {
+      animation: fadeUp 0.6s 0.25s ease both;
+      padding: 3rem 0;
+    }
+    .empty-state p {
+      font-size: 0.95rem;
+      color: #333;
+      line-height: 1.7;
+    }
+    .support-wrap {
+      animation: fadeUp 0.6s 0.38s ease both;
+    }
   </style>
-  <h1>Блог</h1>
-  <p class="empty">Скоро здесь появятся статьи.</p>
-  <Support lang="ru" />
+
+  <div class="blog-header">
+    <h1>Блог</h1>
+    <p>Статьи скоро появятся.</p>
+  </div>
+  <div class="empty-state">
+    <p>Первые посты уже пишутся. Подпишись, чтобы не пропустить.</p>
+  </div>
+  <div class="support-wrap">
+    <Support lang="ru" />
+  </div>
 </Base>
